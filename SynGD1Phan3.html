@@ -3,321 +3,178 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trò Chơi Ghép Từ Đồng Nghĩa - PLAYTOEIC GD1P1</title>
-    <!-- Tích hợp Canvas Confetti để bắn pháo hoa -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <!-- Sử dụng bộ Font chữ bo tròn dễ thương hỗ trợ Tiếng Việt cực tốt -->
+    <title>Trò Chơi Ghép Từ Đồng Nghĩa - PLAYTOEIC GD1P3</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&family=Quicksand:wght@600;700;900&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Quicksand', 'Nunito', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: radial-gradient(circle, #ffebf0 0%, #ffcbd7 50%, #ffafc1 100%);
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            color: #2f3640;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
+            background-size: cover; background-position: center; background-attachment: fixed;
+            color: #2f3640; margin: 0; padding: 20px;
+            display: flex; flex-direction: column; align-items: center; min-height: 100vh;
+            overflow-x: hidden; position: relative;
         }
 
-        /* --- Hệ thống hiệu ứng rơi (Lá và hoa) --- */
         .falling-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0;
         }
         .leaf {
-            position: absolute;
-            top: -50px;
-            pointer-events: none;
+            position: absolute; top: -50px; pointer-events: none;
             animation: fall linear infinite;
         }
         @keyframes fall {
             0% { transform: translateY(0) rotate(0deg) translateX(0); opacity: 0; }
-            10% { opacity: 0.8; }
-            90% { opacity: 0.8; }
+            10% { opacity: 0.8; } 90% { opacity: 0.8; }
             100% { transform: translateY(105vh) rotate(720deg) translateX(100px); opacity: 0; }
         }
 
-        /* --- Nội dung chính --- */
         .main-content {
-            position: relative;
-            z-index: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
+            position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; width: 100%;
         }
         h1 {
-            color: #ff477e;
-            text-shadow: 3px 3px 0px #ffffff, 6px 6px 0px rgba(255, 71, 126, 0.2); 
-            margin-bottom: 10px;
-            text-align: center;
-            font-size: 36px;
-            font-weight: 900;
-            letter-spacing: 1px;
+            color: #ff477e; text-shadow: 3px 3px 0px #ffffff, 6px 6px 0px rgba(255, 71, 126, 0.2); 
+            margin-bottom: 10px; text-align: center; font-size: 36px; font-weight: 900;
         }
         .instructions {
-            color: #d93d4a;
-            background: #ffffff;
-            padding: 12px 26px;
-            border-radius: 30px;
-            margin-bottom: 25px;
-            text-align: center;
-            max-width: 700px;
-            font-size: 16px;
-            font-weight: 700;
-            box-shadow: 0 6px 0px #ffb7c5, 0 10px 20px rgba(0,0,0,0.06);
-            border: 3px solid #ff477e;
+            color: #d93d4a; background: #ffffff; padding: 12px 26px;
+            border-radius: 30px; margin-bottom: 25px; text-align: center;
+            max-width: 700px; font-size: 16px; font-weight: 700;
+            box-shadow: 0 6px 0px #ffb7c5, 0 10px 20px rgba(0,0,0,0.06); border: 3px solid #ff477e;
         }
 
         #reset-btn {
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            z-index: 10;
-            background-color: #f43f5e;
-            color: white;
-            border: none;
-            padding: 6px 14px;
-            font-size: 12px;
-            font-weight: bold;
-            border-radius: 25px;
-            cursor: pointer;
-            box-shadow: 0 4px 0px #c84141, 0 6px 10px rgba(0,0,0,0.1);
-            transition: all 0.2s;
+            position: absolute; top: 10px; right: 20px; z-index: 10;
+            background-color: #f43f5e; color: white; border: none;
+            padding: 6px 14px; font-size: 12px; font-weight: bold;
+            border-radius: 25px; cursor: pointer;
+            box-shadow: 0 4px 0px #c84141, 0 6px 10px rgba(0,0,0,0.1); transition: all 0.2s;
         }
-        #reset-btn:hover { 
-            background-color: #e11d48; 
-            transform: translateY(-1px); 
-        }
-        @media (max-width: 600px) {
-            #reset-btn {
-                position: static;
-                margin-bottom: 15px;
-            }
-        }
+        #reset-btn:hover { background-color: #e11d48; transform: translateY(-1px); }
+        @media (max-width: 600px) { #reset-btn { position: static; margin-bottom: 15px; } }
 
-        /* Thanh chia phần (Tabs) */
         .tab-container {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            width: 100%;
-            max-width: 1200px;
-            justify-content: center;
-            flex-wrap: wrap;
+            display: flex; gap: 10px; margin-bottom: 20px;
+            width: 100%; max-width: 1200px; justify-content: center; flex-wrap: wrap;
         }
         .tab-btn {
-            padding: 10px 20px;
-            border: 1px solid rgba(255,255,255,0.5);
-            background-color: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(5px);
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            color: #0369a1;
-            transition: all 0.2s;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            padding: 10px 20px; border: 1px solid rgba(255,255,255,0.5);
+            background-color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(5px);
+            border-radius: 8px; cursor: pointer; font-weight: bold; color: #0369a1;
+            transition: all 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
-        .tab-btn.active {
-            background-color: #0284c7;
-            color: white;
-            border-color: #0284c7;
-        }
+        .tab-btn.active { background-color: #0284c7; color: white; border-color: #0284c7; }
 
-        /* Kho chứa từ hiệu ứng gương mờ */
         #vocab-pool {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            width: 100%;
-            max-width: 1200px;
-            justify-content: center;
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            padding: 20px;
-            border-radius: 16px;
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.08);
-            margin-bottom: 25px;
-            min-height: 70px;
-            border: 1px solid rgba(255, 255, 255, 0.4);
+            display: flex; flex-wrap: wrap; gap: 10px; width: 100%; max-width: 1200px;
+            justify-content: center; background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            padding: 20px; border-radius: 16px; box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.08);
+            margin-bottom: 25px; min-height: 70px; border: 1px solid rgba(255, 255, 255, 0.4);
             box-sizing: border-box;
         }
         .clickable-word {
-            background-color: #0284c7;
-            color: white;
-            padding: 9px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 14px;
-            user-select: none;
-            box-shadow: 0 4px 6px rgba(2, 132, 199, 0.15);
-            transition: all 0.15s;
+            background-color: #0284c7; color: white; padding: 9px 16px; border-radius: 8px;
+            cursor: pointer; font-weight: 600; font-size: 14px; user-select: none;
+            box-shadow: 0 4px 6px rgba(2, 132, 199, 0.15); transition: all 0.15s;
+            position: relative; border: 2px solid transparent;
         }
-        .clickable-word:hover {
-            background-color: #0369a1;
-            transform: translateY(-2px);
-        }
+        .clickable-word:hover { transform: translateY(-2px); }
         .clickable-word.selected {
-            background-color: #f97316 !important;
-            transform: scale(1.05);
-            box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.5);
+            background-color: #f97316 !important; transform: scale(1.05);
+            box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.5); border-color: transparent !important;
         }
+        .word-author { display: block; font-size: 10px; opacity: 0.85; font-weight: normal; margin-top: 2px; }
 
-        /* Thẻ từ bay lơ lửng đi theo chuột */
         #floating-cursor-word {
-            position: fixed;
-            pointer-events: none;
-            background-color: #f97316;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 14px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.25);
-            z-index: 9999;
-            display: none;
-            transform: translate(15px, 15px);
-            white-space: nowrap;
+            position: fixed; pointer-events: none; background-color: #f97316;
+            color: white; padding: 8px 16px; border-radius: 8px; font-weight: 600;
+            font-size: 14px; box-shadow: 0 10px 20px rgba(0,0,0,0.25); z-index: 9999;
+            display: none; transform: translate(15px, 15px); white-space: nowrap;
         }
 
-        /* Lưới 3 cột câu hỏi */
         #game-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            width: 100%;
-            max-width: 1200px;
-            margin-bottom: 25px;
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;
+            width: 100%; max-width: 1200px; margin-bottom: 25px;
         }
         @media (max-width: 900px) { #game-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 600px) { #game-grid { grid-template-columns: 1fr; } }
 
         .quiz-card {
-            padding: 15px;
-            border-radius: 14px;
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            box-sizing: border-box;
+            padding: 15px; border-radius: 14px; backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px); border: 1px solid rgba(255, 255, 255, 0.4);
+            display: flex; flex-direction: column; gap: 10px; box-sizing: border-box;
             box-shadow: 0 4px 15px rgba(0,0,0,0.03);
         }
-        .vietnamese-def {
-            font-size: 20px;
-            font-weight: 700;
-            color: #0f172a;
-            min-height: 38px;
-            display: flex;
-            align-items: center;
-        }
+        .vietnamese-def { font-size: 20px; font-weight: 700; color: #0f172a; min-height: 38px; display: flex; align-items: center; }
 
-        /* Vùng nhận từ */
         .drop-zone {
-            border: 2px dashed rgba(2, 132, 199, 0.25);
-            border-radius: 10px;
-            min-height: 70px;
-            background-color: rgba(255, 255, 255, 0.45);
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            padding: 8px;
-            align-content: flex-start;
-            cursor: pointer;
-            transition: all 0.2s;
+            border: 2px dashed rgba(2, 132, 199, 0.25); border-radius: 10px;
+            min-height: 70px; background-color: rgba(255, 255, 255, 0.45);
+            display: flex; flex-wrap: wrap; gap: 6px; padding: 8px;
+            align-content: flex-start; cursor: pointer; transition: all 0.2s;
         }
-        .drop-zone:hover {
-            background-color: rgba(255, 255, 255, 0.75);
-            border-color: #0284c7;
-        }
+        .drop-zone:hover { background-color: rgba(255, 255, 255, 0.75); border-color: #0284c7; }
 
-        /* Nút điều khiển */
-        .controls {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 50px;
-        }
+        .controls { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-bottom: 50px; }
         #check-btn {
-            background-color: #10b981;
-            color: white;
-            border: none;
-            padding: 14px 40px;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 30px;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-            transition: all 0.2s;
+            background-color: #10b981; color: white; border: none; padding: 14px 40px;
+            font-size: 16px; font-weight: bold; border-radius: 30px; cursor: pointer;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); transition: all 0.2s;
         }
         #check-btn:hover { background-color: #059669; transform: translateY(-1px); }
-        
         #result-message {
-            font-size: 16px;
-            font-weight: bold;
-            text-align: center;
-            min-height: 24px;
-            background: rgba(255,255,255,0.7);
-            padding: 4px 12px;
-            border-radius: 10px;
+            font-size: 16px; font-weight: bold; text-align: center; min-height: 24px;
+            background: rgba(255,255,255,0.7); padding: 4px 12px; border-radius: 10px;
         }
 
-        /* --- Hệ thống con trỏ người chơi khác --- */
         .other-cursor {
-            position: fixed;
-            pointer-events: none;
-            z-index: 99999;
+            position: fixed; pointer-events: none; z-index: 99999;
             transition: left 0.08s linear, top 0.08s linear;
         }
         .cursor-pointer {
-            width: 0; height: 0;
-            border-left: 12px solid #ef4444;
-            border-top: 7px solid transparent;
-            border-bottom: 7px solid transparent;
+            width: 0; height: 0; border-left: 12px solid #ef4444;
+            border-top: 7px solid transparent; border-bottom: 7px solid transparent;
             transform: rotate(-35deg);
         }
         .cursor-pointer-label {
-            position: absolute;
-            left: 12px; top: 12px;
-            background: #ef4444;
-            color: white;
-            font-size: 11px;
-            padding: 2px 6px;
-            border-radius: 4px;
-            white-space: nowrap;
-            font-weight: bold;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+            position: absolute; left: 12px; top: 12px; background: #ef4444;
+            color: white; font-size: 11px; padding: 2px 6px; border-radius: 4px;
+            white-space: nowrap; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.15);
         }
         .cursor-holding-word {
-            position: absolute;
-            left: 15px; top: 32px;
-            background-color: rgba(249, 115, 22, 0.85);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 6px;
-            font-weight: 600;
-            font-size: 12px;
-            white-space: nowrap;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-            border: 1px solid rgba(255,255,255,0.2);
-            animation: pulse-glow 1.5s infinite ease-in-out;
+            position: absolute; left: 15px; top: 32px;
+            background-color: rgba(249, 115, 22, 0.85); color: white;
+            padding: 5px 10px; border-radius: 6px; font-weight: 600; font-size: 12px;
+            white-space: nowrap; box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            border: 1px solid rgba(255,255,255,0.2); animation: pulse-glow 1.5s infinite ease-in-out;
         }
+
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px);
+            display: none; justify-content: center; align-items: center; z-index: 100000;
+        }
+        .modal-card {
+            background: #ffffff; border-radius: 20px; padding: 25px 30px;
+            width: 90%; max-width: 450px; text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2); border: 3px solid #ff477e;
+        }
+        .modal-card h2 { color: #ff477e; margin-top: 0; font-size: 24px; }
+        .stats-list { margin: 20px 0; padding: 0; list-style: none; text-align: left; }
+        .stats-item {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 14px; margin-bottom: 8px; background: #fff0f3;
+            border-radius: 10px; font-weight: bold; color: #2f3640;
+        }
+        .stats-item.top-1 { background: #fef08a; border: 2px solid #eab308; }
+        .close-modal-btn {
+            background-color: #0284c7; color: white; border: none;
+            padding: 10px 24px; font-size: 15px; font-weight: bold;
+            border-radius: 20px; cursor: pointer; transition: all 0.2s;
+        }
+        .close-modal-btn:hover { background-color: #0369a1; }
+
         @keyframes pulse-glow {
             0% { transform: scale(1); opacity: 0.9; }
             50% { transform: scale(1.03); opacity: 1; }
@@ -331,11 +188,9 @@
 
     <div class="main-content">
         <button id="reset-btn">Reset (3)</button>
-
         <h1>SYNONYMS - PLAYTOEIC (GD1P3)</h1>
-        <p class="instructions" id="status-room">🟢 Hãy ghép từ vào ô tiếng Việt và kiểm tra!</p>
+        <p class="instructions" id="status-room">🟢 Ghép các từ tiếng Anh vào đúng nghĩa Tiếng Việt!</p>
 
-        <!-- Thanh chuyển phần -->
         <div class="tab-container">
             <button class="tab-btn active" id="tab-0">Phần 1</button>
             <button class="tab-btn" id="tab-1">Phần 2</button>
@@ -346,19 +201,27 @@
         <div id="game-grid"></div>
 
         <div class="controls">
-            <button id="check-btn">Kiểm tra Phần này</button>
+            <button id="check-btn">Thống Kê Đóng Góp</button>
             <div id="result-message"></div>
         </div>
     </div>
 
-    <!-- Nhãn bay lơ lửng đi theo chuột -->
     <div id="floating-cursor-word"></div>
 
-    <!-- Tải Firebase SDK bằng ES Modules -->
+    <div class="modal-overlay" id="stats-modal">
+        <div class="modal-card">
+            <h2>🏆 Bảng Thống Kê Đóng Góp</h2>
+            <p style="font-weight: 600; color: #475569;" id="modal-part-title">Số đáp án đúng do từng người chơi ghép:</p>
+            <ul class="stats-list" id="stats-list-container"></ul>
+            <button class="close-modal-btn" onclick="document.getElementById('stats-modal').style.display='none'">Đóng lại</button>
+        </div>
+    </div>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getDatabase, ref, set, onValue, onDisconnect, runTransaction } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
+        // Cấu hình Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyDMn-gJwwJVQjqN9HxPU2lrmf6_Po0I6ms",
             authDomain: "tudongnghia.firebaseapp.com",
@@ -372,46 +235,46 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        // --- Dữ liệu tĩnh (Đã làm sạch từ trùng lặp) ---
         const pastelColors = ['rgba(255, 241, 242, 0.7)', 'rgba(254, 243, 199, 0.7)', 'rgba(236, 252, 203, 0.7)', 'rgba(220, 252, 231, 0.7)', 'rgba(224, 242, 254, 0.7)', 'rgba(224, 231, 255, 0.7)', 'rgba(243, 232, 255, 0.7)'];
         const allPartsData = [
             [
-		{ "eng": ["access", "entrance", "entryway", "entry", "gate", "way in"], "vi": "(N) : lối vào" },
-  		{ "eng": ["obtain", "get", "acquire", "gain", "earn"], "vi": "(V) : lấy, có được" },
-  		{ "eng": ["malfunction", "not function", "out of order", "go down", "go wrong", "stop working", "fail", "break down"], "vi": "bị hỏng" },
-  		{ "eng": ["customer", "client", "consumer", "patron", "buyer", "purchaser"], "vi": "(N) : khách hàng" },
-  		{ "eng": ["expire", "become invalid", "run out"], "vi": "(V) : hết hạn" },
-  		{ "eng": ["effort", "attempt", "try", "strive", "endeavor"], "vi": "(N) : cố gắng, nỗ lực" },
-  		{ "eng": ["notify", "inform", "announce"], "vi": "(V) : thông báo" },
-  		{ "eng": ["perform", "conduct", "carry out", "do", "implement"], "vi": "(V) : thực hiện" },
-  		{ "eng": ["penalty", "fine"], "vi": "(N) : tiền phạt" },
-  		{ "eng": ["construct", "build"], "vi": "(V) : xây dựng" }
+                { "eng": ["expand", "enlarge", "widen", "broaden"], "vi": "(V) : mở rộng" },
+                { "eng": ["last", "extend", "lenghen", "prolong"], "vi": "(V) : kéo dài" },
+                { "eng": ["manufacture", "make", "produce", "create"], "vi": "(V) : sản xuất, làm ra" },
+                { "eng": ["goods", "merchandise", "item", "product"], "vi": "(N) : sản phẩm" },
+                { "eng": ["photograph", "photo", "picture", "image"], "vi": "(N) : hình ảnh" },
+                { "eng": ["shortage", "lack", "shortfall"], "vi": "(N) : thiếu hụt" },
+                { "eng": ["large", "huge", "sizable", "enormous", "immense", "tremendous", "vast"], "vi": "(adj) : lớn, sâu rộng" },
+                { "eng": ["annually", "yearly", "once a year", "per year"], "vi": "(adv) : mỗi năm 1 lần" },
+                { "eng": ["challenging", "difficult", "hard", "tough"], "vi": "(adj) : khó khăn, thử thách" },
+                { "eng": ["complete", "finish", "finalize"], "vi": "(V) : hoàn thành" }
             ],
             [
- 		{ "eng": ["inspect", "examine", "check", "go over", "investigation"], "vi": "(V) : kiểm tra, điều tra" },
-  		{ "eng": ["former", "previous", "old", "past", "last", "earlier"], "vi": "(adj) : cũ, trước" },
-  		{ "eng": ["purpose", "aim", "target", "objective", "goal", "intention", "intent"], "vi": "(N) : mục đích, ý định" },
-  		{ "eng": ["supervise", "manage", "oversee", "monitor", "keep track of"], "vi": "(V) : giám sát, theo dõi" },
-  		{ "eng": ["banquet", "dinner", "reception", "luncheon", "party"], "vi": "(N) : bữa tiệc" },
-  		{ "eng": ["rest", "remainder", "remaining part"], "vi": "(N) : phần còn lại" },
-  		{ "eng": ["warehouse", "stockroom", "storage", "storehouse"], "vi": "(N) : nhà kho" },
-  		{ "eng": ["creative", "innovative"], "vi": "(adj) : sáng tạo" },
-  		{ "eng": ["business", "firm", "company", "organization", "corporation", "enterprise"], "vi": "(N) : doanh nghiệp" },
-  		{ "eng": ["commercial", "promotion", "advertisement"], "vi": "(N) : quảng cáo" }
+                { "eng": ["schedule", "itinerary", "timetable", "timeline"], "vi": "(N) : lịch trình" },
+                { "eng": ["attendee", "participant"], "vi": "(N) : người tham gia" },
+                { "eng": ["attendant", "server", "waiter"], "vi": "(N) : phục vụ" },
+                { "eng": ["abroad", "overseas", "out of the country"], "vi": "(adv) : nước ngoài" },
+                { "eng": ["receptionist", "front desk staff"], "vi": "nhân viên lễ tân" },
+                { "eng": ["luggage", "baggage", "suitcase", "bag", "backpack"], "vi": "(N) : ba lô, hành lý" },
+                { "eng": ["license", "permit", "authorization", "permission"], "vi": "(N) : sự cho phép, giấy phép" },
+                { "eng": ["beverage", "drink"], "vi": "(N) : đồ uống" },
+                { "eng": ["confidential", "secret", "private"], "vi": "(adj) : bí mật, riêng tư" },
+                { "eng": ["sample", "model", "pattern", "prototype"], "vi": "(N) : vật mẫu" }
             ],
             [
- 		{ "eng": ["alternative", "alternate", "replacement", "substitute"], "vi": "(adj) : thay thế" },
-  		{ "eng": ["regularly", "frequently", "often", "normally", "generally"], "vi": "(adv) : thường xuyên, thường thường" },
-  		{ "eng": ["recently", "lately", "not long ago", "a short time ago"], "vi": "(adv) : gần đây" },
-  		{ "eng": ["rarely", "seldom", "infrequently", "hardly", "scarcely"], "vi": "(adv) : hiếm khi" },
-  		{ "eng": ["important", "vital", "crucial", "critical", "essential", "necessary"], "vi": "(adj) : quan trọng, cần thiết" },
-  		{ "eng": ["colleague", "coworker", "teammate", "workmate"], "vi": "(N) : đồng nghiệp" },
-  		{ "eng": ["journal", "magazine", "periodical", "newspaper"], "vi": "(N) : tạp chí, tờ báo" },
-  		{ "eng": ["brochure", "pamphlet", "leaflet", "flyer", "handout"], "vi": "(N) : tờ rơi, sách quảng cáo" },
-  		{ "eng": ["assist", "give a hand", "lend a hand", "help", "support", "aid"], "vi": "(V) : hỗ trợ" }
+                { "eng": ["venue", "location", "place", "space", "site"], "vi": "(N) : địa điểm" },
+                { "eng": ["expensive", "costly", "high-priced", "overpriced", "pricey", "big-ticket"], "vi": "(adj) : đắt đỏ" },
+                { "eng": ["equipment", "appliances", "tools", "device", "machinery"], "vi": "(N) : thiết bị, máy móc" },
+                { "eng": ["trip", "tour", "excursion", "outing", "journey", "travel"], "vi": "(N) : chuyến đi" },
+                { "eng": ["own", "possess", "have", "boast"], "vi": "(V) : sở hữu, đang có" },
+                { "eng": ["replace", "substitute", "exchange", "swap", "switch"], "vi": "(V) : thay thế, đổi" },
+                { "eng": ["maintain", "retain"], "vi": "(V) : duy trì" },
+                { "eng": ["reply to", "respond to", "answer"], "vi": "(V) : trả lời, phản hồi" },
+                { "eng": ["total", "complete", "entire", "whole", "overall"], "vi": "(adj) : toàn bộ, tổng thể" },
+                { "eng": ["carpet", "rug", "mat", "floor covering"], "vi": "(N) : tấm thảm" }
             ]
         ];
-        // --- Biến trạng thái Local ---
+
         let username = prompt("Nhập tên của bạn để tham gia phòng game:", "Người chơi " + Math.floor(Math.random() * 100)) || "Ẩn danh";
         const myUserId = "user_" + Math.random().toString(36).substr(2, 9);
         const myColor = ["#ef4444", "#3b82f6", "#10b981", "#f59e0b", "#8b5cf6", "#ec4899"][Math.floor(Math.random() * 6)];
@@ -419,7 +282,7 @@
         let currentPartIndex = 0;
         let selectedWordLocal = null;
         let resetClickCount = 0; 
-        let isCheckedState = false; // BIẾN CỜ: Lưu trạng thái khi bấm nút Kiểm tra
+        let hasShownModalForPart = false;
 
         const vocabPool = document.getElementById('vocab-pool');
         const gameGrid = document.getElementById('game-grid');
@@ -427,26 +290,26 @@
         const floatingEl = document.getElementById('floating-cursor-word');
         const resetBtn = document.getElementById('reset-btn');
 
-        // Khởi tạo Presence
         const myPresenceRef = ref(db, `presence/${myUserId}`);
         set(myPresenceRef, { name: username, color: myColor, x: 0, y: 0, holdingWord: "" });
         onDisconnect(myPresenceRef).remove();
 
-        // Đồng bộ con trỏ người chơi khác
-        onValue(ref(db, 'presence'), (snapshot) => {
-            const data = snapshot.val();
-            const activeIds = data ? Object.keys(data) : [];
-            document.querySelectorAll('.other-cursor').forEach(el => {
-                const id = el.id.replace('cursor-', '');
-                if (!activeIds.includes(id) || id === myUserId) el.remove();
-            });
+        window.addEventListener('mousemove', (e) => {
+            updateFloatingPosition(e.clientX, e.clientY);
+            set(ref(db, `presence/${myUserId}/x`), e.clientX);
+            set(ref(db, `presence/${myUserId}/y`), e.clientY);
+        });
 
-            if (!data) return;
+        onValue(ref(db, 'presence'), (snapshot) => {
+            const data = snapshot.val() || {};
+            document.querySelectorAll('.other-cursor').forEach(el => {
+                const userId = el.id.replace('cursor-', '');
+                if (!data[userId]) el.remove();
+            });
 
             Object.keys(data).forEach(id => {
                 if (id === myUserId) return;
                 const user = data[id];
-                
                 let cursorEl = document.getElementById(`cursor-${id}`);
                 if (!cursorEl) {
                     cursorEl = document.createElement('div');
@@ -459,7 +322,6 @@
                     `;
                     document.body.appendChild(cursorEl);
                 }
-                
                 cursorEl.style.left = user.x + 'px';
                 cursorEl.style.top = user.y + 'px';
 
@@ -473,17 +335,11 @@
             });
         });
 
-        window.addEventListener('mousemove', (e) => {
-            set(ref(db, `presence/${myUserId}/x`), e.clientX);
-            set(ref(db, `presence/${myUserId}/y`), e.clientY);
-            updateFloatingPosition(e.clientX, e.clientY);
-        });
-
-        // Lắng nghe dữ liệu Game
         onValue(ref(db, 'gameState/currentPart'), (snapshot) => {
             const part = snapshot.val();
             if (part !== null && part !== undefined && part !== currentPartIndex) {
                 currentPartIndex = part;
+                hasShownModalForPart = false;
                 document.querySelectorAll('.tab-btn').forEach((btn, idx) => {
                     btn.classList.toggle('active', idx === part);
                 });
@@ -506,7 +362,6 @@
 
         function resetLocalSelection() {
             selectedWordLocal = null;
-            isCheckedState = false; // Tắt cờ xem kết quả khi có tương tác mới
             floatingEl.style.display = 'none';
             floatingEl.innerText = '';
             set(ref(db, `presence/${myUserId}/holdingWord`), "");
@@ -532,7 +387,6 @@
             };
         }
 
-        // Đưa sự kiện trả từ về kho ra ngoài để tránh bị gán lại liên tục
         vocabPool.addEventListener('click', () => {
             if (selectedWordLocal) {
                 const wordText = selectedWordLocal.text;
@@ -543,8 +397,11 @@
                     runTransaction(ref(db, 'gameState/board'), (currentBoard) => {
                         if (currentBoard) {
                             const targetZone = currentBoard.zones.find(z => z.id === zoneId);
-                            if (targetZone && targetZone.currentWords && targetZone.currentWords.includes(wordText)) {
-                                targetZone.currentWords = targetZone.currentWords.filter(w => w !== wordText);
+                            if (targetZone && targetZone.currentWords) {
+                                targetZone.currentWords = targetZone.currentWords.filter(item => {
+                                    const text = typeof item === 'object' ? item.word : item;
+                                    return text !== wordText;
+                                });
                                 if (!currentBoard.pool) currentBoard.pool = [];
                                 currentBoard.pool.push(wordText);
                             }
@@ -557,10 +414,9 @@
             }
         });
 
-        // --- Đồng bộ hóa bàn cờ thực ---
         function renderBoardRealtime(boardState) {
             if (!boardState || boardState.partIndex !== currentPartIndex) {
-                vocabPool.innerHTML = "<div style='color: #666;'>Đang tạo phòng dữ liệu...</div>";
+                vocabPool.innerHTML = "<div style='color: #666;'>Đang tải dữ liệu...</div>";
                 const initialBoard = generateFreshBoard(currentPartIndex);
                 set(ref(db, 'gameState/board'), initialBoard);
                 return;
@@ -569,7 +425,6 @@
             vocabPool.innerHTML = "";
             gameGrid.innerHTML = "";
 
-            // 1. Kho chứa từ (Pool)
             if (boardState.pool) {
                 boardState.pool.forEach((word) => {
                     const wordEl = document.createElement('div');
@@ -586,8 +441,6 @@
                             resetLocalSelection();
                             return;
                         }
-                        
-                        isCheckedState = false; // Bỏ chế độ xem kết quả nếu đang giữ từ
                         selectedWordLocal = { text: word, source: 'pool' };
                         document.querySelectorAll('.clickable-word').forEach(el => el.classList.remove('selected'));
                         wordEl.classList.add('selected');
@@ -595,14 +448,19 @@
                         floatingEl.innerText = word;
                         floatingEl.style.display = 'block';
                         updateFloatingPosition(e.clientX, e.clientY);
-
                         set(ref(db, `presence/${myUserId}/holdingWord`), word);
                     });
                     vocabPool.appendChild(wordEl);
                 });
             }
 
-            // 2. Ô thả từ (Game Grid)
+            let totalPartWords = 0;
+            let currentCorrectWords = 0;
+            let currentTotalPlacedWords = 0;
+            const contributions = {};
+
+            allPartsData[currentPartIndex].forEach(item => totalPartWords += item.eng.length);
+
             if (boardState.zones) {
                 boardState.zones.forEach((zoneData, index) => {
                     const card = document.createElement('div');
@@ -617,44 +475,48 @@
                     dropZone.classList.add('drop-zone');
                     dropZone.dataset.id = zoneData.id;
 
-                    if (zoneData.currentWords) {
-                        const originalData = allPartsData[currentPartIndex][zoneData.id];
+                    const correctAnswers = zoneData.answers ? zoneData.answers.split(',') : [];
 
-                        zoneData.currentWords.forEach(word => {
+                    if (zoneData.currentWords) {
+                        zoneData.currentWords.forEach(wordObj => {
+                            const wordText = typeof wordObj === 'object' ? wordObj.word : wordObj;
+                            const wordUser = typeof wordObj === 'object' ? wordObj.user : 'Ẩn danh';
+                            currentTotalPlacedWords++;
+
                             const wordInZoneEl = document.createElement('div');
                             wordInZoneEl.className = 'clickable-word';
-                            wordInZoneEl.innerText = word;
+                            wordInZoneEl.innerHTML = `${wordText} <span class="word-author">👤 ${wordUser}</span>`;
+                            wordInZoneEl.dataset.wordText = wordText;
+                            wordInZoneEl.dataset.wordUser = wordUser;
 
-                            // LOGIC MỚI: Nếu đang ở trạng thái Kiểm Tra, luôn duy trì màu đúng/sai
-                            if (isCheckedState) {
-                                if (originalData && originalData.eng.includes(word)) {
-                                    wordInZoneEl.style.backgroundColor = "#10b981"; // Đúng -> Màu Xanh
-                                } else {
-                                    wordInZoneEl.style.backgroundColor = "#ef4444"; // Sai -> Màu Đỏ
-                                }
+                            if (correctAnswers.includes(wordText)) {
+                                wordInZoneEl.style.backgroundColor = "#10b981"; 
+                                wordInZoneEl.style.borderColor = "#059669";
+                                currentCorrectWords++;
+                                contributions[wordUser] = (contributions[wordUser] || 0) + 1;
+                            } else {
+                                wordInZoneEl.style.backgroundColor = "#ef4444"; 
+                                wordInZoneEl.style.borderColor = "#dc2626";
                             }
 
-                            if (selectedWordLocal && selectedWordLocal.text === word && selectedWordLocal.source === `zone-${zoneData.id}`) {
+                            if (selectedWordLocal && selectedWordLocal.text === wordText && selectedWordLocal.source === `zone-${zoneData.id}`) {
                                 wordInZoneEl.classList.add('selected');
                             }
 
                             wordInZoneEl.addEventListener('click', (e) => {
                                 e.stopPropagation();
-                                if (selectedWordLocal && selectedWordLocal.text === word && selectedWordLocal.source === `zone-${zoneData.id}`) {
+                                if (selectedWordLocal && selectedWordLocal.text === wordText && selectedWordLocal.source === `zone-${zoneData.id}`) {
                                     resetLocalSelection();
                                     return;
                                 }
-
-                                isCheckedState = false;
-                                selectedWordLocal = { text: word, source: `zone-${zoneData.id}` };
+                                selectedWordLocal = { text: wordText, source: `zone-${zoneData.id}` };
                                 document.querySelectorAll('.clickable-word').forEach(el => el.classList.remove('selected'));
                                 wordInZoneEl.classList.add('selected');
                                 
-                                floatingEl.innerText = word;
+                                floatingEl.innerText = wordText;
                                 floatingEl.style.display = 'block';
                                 updateFloatingPosition(e.clientX, e.clientY);
-
-                                set(ref(db, `presence/${myUserId}/holdingWord`), word);
+                                set(ref(db, `presence/${myUserId}/holdingWord`), wordText);
                             });
 
                             dropZone.appendChild(wordInZoneEl);
@@ -669,37 +531,37 @@
 
                             runTransaction(ref(db, 'gameState/board'), (currentBoard) => {
                                 if (!currentBoard) return currentBoard;
+                                const newWordObj = { word: wordText, user: username };
 
                                 if (source === 'pool') {
                                     if (currentBoard.pool && currentBoard.pool.includes(wordText)) {
                                         currentBoard.pool = currentBoard.pool.filter(w => w !== wordText);
                                         const targetZone = currentBoard.zones.find(z => z.id === targetZoneId);
                                         if (!targetZone.currentWords) targetZone.currentWords = [];
-                                        targetZone.currentWords.push(wordText);
-                                    } else {
-                                        return;
-                                    }
+                                        targetZone.currentWords.push(newWordObj);
+                                    } else return;
                                 } 
                                 else if (source.startsWith('zone-')) {
                                     const oldZoneId = parseInt(source.replace('zone-', ''));
                                     if (oldZoneId === targetZoneId) return currentBoard;
 
                                     const oldZone = currentBoard.zones.find(z => z.id === oldZoneId);
-                                    if (oldZone && oldZone.currentWords && oldZone.currentWords.includes(wordText)) {
-                                        oldZone.currentWords = oldZone.currentWords.filter(w => w !== wordText);
+                                    if (oldZone && oldZone.currentWords) {
+                                        oldZone.currentWords = oldZone.currentWords.filter(item => {
+                                            const text = typeof item === 'object' ? item.word : item;
+                                            return text !== wordText;
+                                        });
                                         const targetZone = currentBoard.zones.find(z => z.id === targetZoneId);
                                         if (!targetZone.currentWords) targetZone.currentWords = [];
-                                        targetZone.currentWords.push(wordText);
-                                    } else {
-                                        return;
-                                    }
+                                        targetZone.currentWords.push(newWordObj);
+                                    } else return;
                                 }
                                 return currentBoard;
                             }).then((result) => {
                                 if (result.committed) {
                                     resetLocalSelection();
                                 } else {
-                                    alert(`Ối! Từ "${wordText}" đã bị một người chơi khác thao tác trước mất rồi.`);
+                                    alert(`Ối! Từ "${wordText}" đã bị người khác thao tác trước mất rồi.`);
                                     resetLocalSelection();
                                 }
                             });
@@ -711,60 +573,72 @@
                     gameGrid.appendChild(card);
                 });
             }
+
+            // TỰ ĐỘNG BẬT BẢNG THỐNG KÊ KHI HOÀN THÀNH 100% PHẦN HIỆN TẠI
+            if (currentCorrectWords === totalPartWords && currentTotalPlacedWords === totalPartWords) {
+                resultMessage.style.color = '#10b981';
+                resultMessage.innerText = `🎉 Xuất sắc! Tất cả từ ở Phần ${currentPartIndex + 1} đã hoàn thành chính xác!`;
+                
+                if (!hasShownModalForPart) {
+                    showContributionBoard(contributions);
+                    hasShownModalForPart = true;
+                }
+            } else {
+                resultMessage.style.color = '#e11d48';
+                resultMessage.innerText = `Đã xếp ${currentTotalPlacedWords}/${totalPartWords} từ (${currentCorrectWords} từ đúng màu xanh).`;
+            }
         }
 
-        // --- Sự kiện Tab đổi Phần chơi ---
         document.querySelectorAll('.tab-btn').forEach((btn, idx) => {
             btn.addEventListener('click', () => {
-                isCheckedState = false;
                 set(ref(db, 'gameState/currentPart'), idx);
+                hasShownModalForPart = false;
                 const freshBoard = generateFreshBoard(idx);
                 set(ref(db, 'gameState/board'), freshBoard);
                 resultMessage.innerText = "";
             });
         });
 
-        // --- Kiểm tra Kết Quả ---
         document.getElementById('check-btn').addEventListener('click', () => {
-            isCheckedState = true; // BẬT CỜ KIỂM TRA
-            
-            const dropZones = document.querySelectorAll('.drop-zone');
-            let totalWordsInPart = 0;
-            let correctWordsCount = 0;
-            let totalUserWords = 0;
-
-            allPartsData[currentPartIndex].forEach(item => totalWordsInPart += item.eng.length);
-
-            dropZones.forEach(zone => {
+            const contributions = {};
+            document.querySelectorAll('.drop-zone').forEach(zone => {
                 const zoneId = parseInt(zone.dataset.id);
-                const originalData = allPartsData[currentPartIndex][zoneId];
-                const correctAnswers = originalData.eng;
-                const childWords = Array.from(zone.children);
-
-                totalUserWords += childWords.length;
-
-                childWords.forEach(wordEl => {
-                    const wordText = wordEl.innerText.trim();
+                const zoneData = allPartsData[currentPartIndex][zoneId];
+                if (!zoneData) return;
+                
+                const correctAnswers = zoneData.eng;
+                Array.from(zone.children).forEach(wordEl => {
+                    const wordText = wordEl.dataset.wordText;
+                    const wordUser = wordEl.dataset.wordUser || 'Ẩn danh';
                     if (correctAnswers.includes(wordText)) {
-                        wordEl.style.backgroundColor = "#10b981";
-                        correctWordsCount++;
-                    } else {
-                        wordEl.style.backgroundColor = "#ef4444";
+                        contributions[wordUser] = (contributions[wordUser] || 0) + 1;
                     }
                 });
             });
-
-            if (correctWordsCount === totalWordsInPart && totalUserWords === totalWordsInPart) {
-                resultMessage.style.color = '#10b981';
-                resultMessage.innerText = `Xuất sắc! Các bạn đã đưa toàn bộ các từ về đúng vị trí! 🎉`;
-                triggerFireworks();
-            } else {
-                resultMessage.style.color = '#e11d48';
-                resultMessage.innerText = `Sắp rồi, cùng xem lại các ô màu đỏ xem nhầm ở đâu nhaaa.`;
-            }
+            showContributionBoard(contributions);
         });
 
-        // Hộp nút Reset an toàn
+        function showContributionBoard(contributions) {
+            document.getElementById('modal-part-title').innerText = `Số đáp án đúng từng người chơi ghép ở Phần ${currentPartIndex + 1}:`;
+            const sortedUsers = Object.keys(contributions).sort((a, b) => contributions[b] - contributions[a]);
+            const container = document.getElementById('stats-list-container');
+            container.innerHTML = "";
+
+            if (sortedUsers.length === 0) {
+                container.innerHTML = "<li class='stats-item'>Chưa có đáp án đúng nào được xếp!</li>";
+            } else {
+                sortedUsers.forEach((user, index) => {
+                    const li = document.createElement('li');
+                    li.className = `stats-item ${index === 0 ? 'top-1' : ''}`;
+                    const crown = index === 0 ? '👑 ' : `${index + 1}. `;
+                    li.innerHTML = `<span>${crown}${user}</span> <span>${contributions[user]} đáp án đúng</span>`;
+                    container.appendChild(li);
+                });
+            }
+
+            document.getElementById('stats-modal').style.display = 'flex';
+        }
+
         resetBtn.addEventListener('click', () => {
             resetClickCount++;
             if (resetClickCount < 3) {
@@ -772,32 +646,21 @@
                 resultMessage.style.color = '#f59e0b';
                 resultMessage.innerText = `Nhấn thêm ${3 - resetClickCount} lần nữa để reset bàn cờ.`;
             } else {
-                isCheckedState = false;
+                hasShownModalForPart = false;
                 const freshBoard = generateFreshBoard(currentPartIndex);
                 set(ref(db, 'gameState/board'), freshBoard).then(() => {
                     resetResetButton();
                     resetLocalSelection();
                     resultMessage.style.color = '#10b981';
-                    resultMessage.innerText = `Đã làm sạch bàn cờ! Các từ đã được nhả về vị trí cũ.`;
+                    resultMessage.innerText = `Đã làm sạch Phần ${currentPartIndex + 1}! Các từ đã được nhả về vị trí cũ.`;
                 });
             }
         });
 
-        function triggerFireworks() {
-            const end = Date.now() + 3000;
-            (function frame() {
-                confetti({ particleCount: 4, angle: 60, spread: 55, origin: { x: 0, y: 0.85 } });
-                confetti({ particleCount: 4, angle: 120, spread: 55, origin: { x: 1, y: 0.85 } });
-                if (Date.now() < end) requestAnimationFrame(frame);
-            }());
-        }
-
-        // Tạo hiệu ứng lá rơi nền
         function createFallingElements() {
             const container = document.getElementById('falling-container');
             const elements = ['🍃', '🌿', '🌸', '🌺', '🌴']; 
-            const count = 25; 
-            for (let i = 0; i < count; i++) {
+            for (let i = 0; i < 25; i++) {
                 const item = document.createElement('div');
                 item.classList.add('leaf');
                 item.innerText = elements[Math.floor(Math.random() * elements.length)];
